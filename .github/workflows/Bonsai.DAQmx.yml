@@ -72,13 +72,20 @@ jobs:
       - name: Configure build
         id: configure-build
         uses: bonsai-rx/configure-build@v1
+        env:
+          NODE_OPTIONS: --enable-source-maps
 
       # ----------------------------------------------------------------------- Build
       - name: Restore
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration ${{matrix.configuration}}
+        run: dotnet build --no-restore --configuration ${{matrix.configuration}} -bl
+      - name: Collect build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildLog
+          path: msbuild.binlog
 
       # ----------------------------------------------------------------------- Pack
       - name: Pack
