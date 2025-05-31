@@ -82,9 +82,10 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration ${{matrix.configuration}} -bl
       - name: Collect build log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BuildLog
+          name: BuildLog-${{matrix.platform.rid}}-${{matrix.configuration}}
           path: msbuild.binlog
 
       # ----------------------------------------------------------------------- Pack
